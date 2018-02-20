@@ -1,36 +1,44 @@
 /**
  * @flow
- * @relayHash c273c0b41c4687f8e9760d910eadab02
+ * @relayHash dec777b467869e1ee7dd60bd87c9958f
  */
 
 /* eslint-disable */
 
 import type { ConcreteBatch } from 'relay-runtime';
-export type AllHotelsSearchQueryResponse = {|
-  +allHotels: ?{| |};
-|};
+export type AllHotelsSearchQueryResponse = {| |};
 
 /*
 query AllHotelsSearchQuery(
   $search: HotelsSearchInput!
   $filter: HotelsFilterInput!
   $options: AvailableHotelOptionsInput
+  $first: Int
+  $after: String
 ) {
-  allHotels: allAvailableHotels(search: $search, filter: $filter, options: $options) {
-    ...AllHotelsSearchList
-  }
+  ...AllHotelsSearchList_data
 }
 
-fragment AllHotelsSearchList on HotelAvailabilityConnection {
-  edges {
-    node {
-      id
-      ...AllHotelsSearchRow
+fragment AllHotelsSearchList_data on RootQuery {
+  allAvailableHotels(search: $search, filter: $filter, options: $options, first: $first, after: $after) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
     }
-  }
-  stats {
-    priceMax
-    priceMin
+    edges {
+      node {
+        __typename
+        id
+        ...AllHotelsSearchRow
+      }
+      cursor
+    }
+    stats {
+      priceMax
+      priceMin
+    }
   }
 }
 
@@ -39,7 +47,7 @@ fragment AllHotelsSearchRow on HotelAvailability {
   hotel {
     id
     mainPhoto {
-      thumbnailUrl
+      lowResUrl
       id
     }
     ...HotelReviewScore_hotel
@@ -92,6 +100,18 @@ const node: ConcreteBatch = {
         "name": "options",
         "type": "AvailableHotelOptionsInput",
         "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "first",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "after",
+        "type": "String",
+        "defaultValue": null
       }
     ],
     "kind": "Fragment",
@@ -99,39 +119,9 @@ const node: ConcreteBatch = {
     "name": "AllHotelsSearchQuery",
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": "allHotels",
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "filter",
-            "variableName": "filter",
-            "type": "HotelsFilterInput"
-          },
-          {
-            "kind": "Variable",
-            "name": "options",
-            "variableName": "options",
-            "type": "AvailableHotelOptionsInput"
-          },
-          {
-            "kind": "Variable",
-            "name": "search",
-            "variableName": "search",
-            "type": "HotelsSearchInput!"
-          }
-        ],
-        "concreteType": "HotelAvailabilityConnection",
-        "name": "allAvailableHotels",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "FragmentSpread",
-            "name": "AllHotelsSearchList",
-            "args": null
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "AllHotelsSearchList_data",
+        "args": null
       }
     ],
     "type": "RootQuery"
@@ -159,6 +149,18 @@ const node: ConcreteBatch = {
         "name": "options",
         "type": "AvailableHotelOptionsInput",
         "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "first",
+        "type": "Int",
+        "defaultValue": null
+      },
+      {
+        "kind": "LocalArgument",
+        "name": "after",
+        "type": "String",
+        "defaultValue": null
       }
     ],
     "kind": "Root",
@@ -167,13 +169,25 @@ const node: ConcreteBatch = {
     "selections": [
       {
         "kind": "LinkedField",
-        "alias": "allHotels",
+        "alias": null,
         "args": [
+          {
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          },
           {
             "kind": "Variable",
             "name": "filter",
             "variableName": "filter",
             "type": "HotelsFilterInput"
+          },
+          {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
           },
           {
             "kind": "Variable",
@@ -196,6 +210,45 @@ const node: ConcreteBatch = {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
+            "concreteType": "PageInfo",
+            "name": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "hasNextPage",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "hasPreviousPage",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "startCursor",
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "endCursor",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "args": null,
             "concreteType": "HotelAvailabilityEdge",
             "name": "edges",
             "plural": true,
@@ -208,6 +261,13 @@ const node: ConcreteBatch = {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "__typename",
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -299,7 +359,7 @@ const node: ConcreteBatch = {
                             "kind": "ScalarField",
                             "alias": null,
                             "args": null,
-                            "name": "thumbnailUrl",
+                            "name": "lowResUrl",
                             "storageKey": null
                           },
                           {
@@ -335,6 +395,13 @@ const node: ConcreteBatch = {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "args": null,
+                "name": "cursor",
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -366,10 +433,54 @@ const node: ConcreteBatch = {
           }
         ],
         "storageKey": null
+      },
+      {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "after",
+            "variableName": "after",
+            "type": "String"
+          },
+          {
+            "kind": "Variable",
+            "name": "filter",
+            "variableName": "filter",
+            "type": "HotelsFilterInput"
+          },
+          {
+            "kind": "Variable",
+            "name": "first",
+            "variableName": "first",
+            "type": "Int"
+          },
+          {
+            "kind": "Variable",
+            "name": "options",
+            "variableName": "options",
+            "type": "AvailableHotelOptionsInput"
+          },
+          {
+            "kind": "Variable",
+            "name": "search",
+            "variableName": "search",
+            "type": "HotelsSearchInput!"
+          }
+        ],
+        "handle": "connection",
+        "name": "allAvailableHotels",
+        "key": "AllHotels_allAvailableHotels",
+        "filters": [
+          "search",
+          "filter",
+          "options"
+        ]
       }
     ]
   },
-  "text": "query AllHotelsSearchQuery(\n  $search: HotelsSearchInput!\n  $filter: HotelsFilterInput!\n  $options: AvailableHotelOptionsInput\n) {\n  allHotels: allAvailableHotels(search: $search, filter: $filter, options: $options) {\n    ...AllHotelsSearchList\n  }\n}\n\nfragment AllHotelsSearchList on HotelAvailabilityConnection {\n  edges {\n    node {\n      id\n      ...AllHotelsSearchRow\n    }\n  }\n  stats {\n    priceMax\n    priceMin\n  }\n}\n\nfragment AllHotelsSearchRow on HotelAvailability {\n  ...HotelTitle\n  hotel {\n    id\n    mainPhoto {\n      thumbnailUrl\n      id\n    }\n    ...HotelReviewScore_hotel\n  }\n}\n\nfragment HotelTitle on HotelAvailability {\n  price {\n    amount\n    currency\n  }\n  hotel {\n    ...HotelDistance_hotel\n    name\n    rating {\n      stars\n    }\n    id\n  }\n}\n\nfragment HotelReviewScore_hotel on Hotel {\n  review {\n    score\n  }\n}\n\nfragment HotelDistance_hotel on Hotel {\n  distanceFromCenter\n}\n"
+  "text": "query AllHotelsSearchQuery(\n  $search: HotelsSearchInput!\n  $filter: HotelsFilterInput!\n  $options: AvailableHotelOptionsInput\n  $first: Int\n  $after: String\n) {\n  ...AllHotelsSearchList_data\n}\n\nfragment AllHotelsSearchList_data on RootQuery {\n  allAvailableHotels(search: $search, filter: $filter, options: $options, first: $first, after: $after) {\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n    }\n    edges {\n      node {\n        __typename\n        id\n        ...AllHotelsSearchRow\n      }\n      cursor\n    }\n    stats {\n      priceMax\n      priceMin\n    }\n  }\n}\n\nfragment AllHotelsSearchRow on HotelAvailability {\n  ...HotelTitle\n  hotel {\n    id\n    mainPhoto {\n      lowResUrl\n      id\n    }\n    ...HotelReviewScore_hotel\n  }\n}\n\nfragment HotelTitle on HotelAvailability {\n  price {\n    amount\n    currency\n  }\n  hotel {\n    ...HotelDistance_hotel\n    name\n    rating {\n      stars\n    }\n    id\n  }\n}\n\nfragment HotelReviewScore_hotel on Hotel {\n  review {\n    score\n  }\n}\n\nfragment HotelDistance_hotel on Hotel {\n  distanceFromCenter\n}\n"
 };
 
 module.exports = node;

@@ -3,8 +3,12 @@
 import * as React from 'react';
 import idx from 'idx';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { View, StyleSheet } from 'react-native';
-import { SimpleCard, NetworkImage } from '@kiwicom/react-native-app-shared';
+import { View } from 'react-native';
+import {
+  SimpleCard,
+  NetworkImage,
+  StyleSheet,
+} from '@kiwicom/react-native-app-shared';
 
 import HotelTitle from './HotelTitle';
 import HotelReviewScore from './HotelReviewScore';
@@ -17,14 +21,19 @@ type Props = {|
 
 const style = StyleSheet.create({
   imageWrapper: {
-    paddingHorizontal: 10,
+    paddingRight: 10,
   },
   image: {
     width: 50,
-    height: 60,
     borderRadius: 2,
+    android: {
+      height: 80,
+    },
+    ios: {
+      height: 70,
+    },
   },
-  hotelWrapper: {
+  row: {
     flex: 1,
     flexDirection: 'row',
   },
@@ -40,24 +49,22 @@ class AllHotelsSearchRow extends React.Component<Props> {
 
   render = () => {
     const { data } = this.props;
-    const thumbnailUrl = idx(data, _ => _.hotel.mainPhoto.thumbnailUrl);
+    const lowResUrl = idx(data, _ => _.hotel.mainPhoto.lowResUrl);
 
     return (
-      <SimpleCard
-        separator={false}
-        onPress={this.onGoToSingleHotel}
-        additionalStyles={{ marginTop: 5, flex: 1, flexDirection: 'row' }}
-      >
-        <View style={style.imageWrapper}>
-          <NetworkImage
-            style={style.image}
-            resizeMode="cover"
-            source={{ uri: thumbnailUrl }}
-          />
-        </View>
-        <View style={style.hotelWrapper}>
-          <HotelTitle data={data} />
-          <HotelReviewScore hotel={data.hotel} />
+      <SimpleCard onPress={this.onGoToSingleHotel}>
+        <View style={style.row}>
+          <View style={style.imageWrapper}>
+            <NetworkImage
+              style={style.image}
+              resizeMode="cover"
+              source={{ uri: lowResUrl }}
+            />
+          </View>
+          <View style={style.row}>
+            <HotelTitle data={data} />
+            <HotelReviewScore hotel={data.hotel} />
+          </View>
         </View>
       </SimpleCard>
     );
@@ -72,7 +79,7 @@ export default createFragmentContainer(
       hotel {
         id
         mainPhoto {
-          thumbnailUrl
+          lowResUrl
         }
         ...HotelReviewScore_hotel
       }

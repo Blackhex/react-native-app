@@ -43,6 +43,10 @@ yarn install && ( cd ios ; pod install )
 
 And if you have Xcode already installed - just run `yarn ios`. It should open iPhone emulator with our application. Similarly for Android (`yarn android`) but you have to open Android emulator first.
 
+You need to make sure that your Android emulator image supports Google Play Store. [Look for this symbol](https://stackoverflow.com/a/43197403/3135248):
+
+![](./.docs/assets/android-emulator-play-store.png)
+
 ## Testing
 
 You will usually need only this during development:
@@ -115,16 +119,14 @@ This project uses [Yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/
 ├── .github/                    - GitHub templates (for PR, issues, contributing)
 ├── android/                    - native code for Android
 ├── app/
-│   ├── common/                 - @kiwicom/react-native-app-common
 │   ├── config/                 - @kiwicom/react-native-app-config
 │   │── core/                   - @kiwicom/react-native-app-core (core package)
-│   │   ├── config/                - application (module) configuration
-│   │   └── src/                   - source files
-│   │       └── screens/           - main screens (usually Relay QueryRenderer roots)
 │   ├── examples/               - examples of RN vs. native code interoperability
 │   ├── hotels/                 - @kiwicom/react-native-app-hotels
+│   ├── navigation/             - @kiwicom/react-native-app-navigation
 │   ├── redux/                  - @kiwicom/react-native-app-redux
 │   └── relay/                  - @kiwicom/react-native-app-relay
+│   └── shared/                 - @kiwicom/react-native-app-shared (formerly common)
 ├── ios/                        - native code for iOS
 ├── scripts/                    - support scripts for the whole monorepo
 └── schema.graphql              - GraphQL schema of the backend server

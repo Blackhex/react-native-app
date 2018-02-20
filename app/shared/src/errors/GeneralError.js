@@ -1,17 +1,28 @@
 // @flow
 
 import * as React from 'react';
-import { Text } from 'react-native';
-import { CenteredView, Color } from '@kiwicom/react-native-app-shared';
+
+import CenteredView from '../view/CenteredView';
+import Color from '../Color';
+import Text from '../Text';
+import StyleSheet from '../PlatformStyleSheet';
 
 type Props = {|
+  // error message visible by user
   errorMessage: string,
 |};
 
 export default function GeneralError({ errorMessage }: Props) {
   return (
     <CenteredView>
-      <Text style={{ color: Color.red.$500 }}>{errorMessage}</Text>
+      <Text style={styleSheet.text}>{errorMessage}</Text>
     </CenteredView>
   );
 }
+
+const styleSheet = StyleSheet.create({
+  text: {
+    color: Color.red.$500,
+    textAlign: 'center',
+  },
+});

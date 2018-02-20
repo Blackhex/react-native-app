@@ -1,8 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Button, Color } from '@kiwicom/react-native-app-shared';
+import { View } from 'react-native';
+import {
+  TouchableItem,
+  Color,
+  StyleSheet,
+  Icon,
+  Text,
+} from '@kiwicom/react-native-app-shared';
 
 import GuestsPopup from './GuestsPopup';
 import type { RoomConfigurationType } from '../SearchParametersType';
@@ -35,15 +41,17 @@ export default class Guests extends React.Component<Props, State> {
     const title = `${guestsCount} Guest${guestsCount !== 1 ? 's' : ''}`;
     return (
       <View>
-        <Button
-          onPress={this.handlePopupToggle}
-          title={title}
-          styles={buttonStyles}
-          icon={{
-            name: 'people',
-            color: Color.grey.$600,
-          }}
-        />
+        <TouchableItem onPress={this.handlePopupToggle} activeOpacity={0.6}>
+          <View style={buttonStyles.buttonWrapper}>
+            <Icon
+              name="people"
+              size={20}
+              color={Color.grey.$600}
+              style={buttonStyles.icon}
+            />
+            <Text>{title}</Text>
+          </View>
+        </TouchableItem>
         <GuestsPopup
           guests={guests}
           onChange={this.handleChange}
@@ -56,31 +64,22 @@ export default class Guests extends React.Component<Props, State> {
 }
 
 const buttonStyles = StyleSheet.create({
-  button: {
-    width: 85,
+  buttonWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    elevation: 1, // Android only
     backgroundColor: '#fff',
-    borderRadius: Platform.select({
-      ios: 0,
-      android: 2,
-    }),
-    height: 40,
-    paddingLeft: 0,
-  },
-  buttonText: {
-    color: Color.grey.$900,
-    fontWeight: 'normal',
+    android: {
+      borderRadius: 3,
+      height: 48,
+    },
+    ios: {
+      borderRadius: 0,
+      height: 47,
+    },
   },
   icon: {
-    paddingLeft: 10,
-    paddingRight: 0,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: Platform.select({
-      ios: 0,
-      android: 2,
-    }),
-    borderBottomLeftRadius: Platform.select({
-      ios: 0,
-      android: 2,
-    }),
+    marginRight: 5,
   },
 });

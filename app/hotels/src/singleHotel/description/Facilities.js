@@ -4,34 +4,29 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import idx from 'idx';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { Color } from '@kiwicom/react-native-app-shared';
+import { Color, AdaptableBadge } from '@kiwicom/react-native-app-shared';
 
 import type { Facilities_facilities } from './__generated__/Facilities_facilities.graphql';
 
 const styles = StyleSheet.create({
   facilities: {
-    paddingVertical: 15,
+    marginTop: 15,
+    paddingTop: 15,
     borderTopWidth: 1,
-    borderTopColor: '#edeff2',
+    borderTopColor: Color.grey.$200,
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection: 'row',
   },
-  facilityView: {
-    borderRadius: 2,
-    backgroundColor: '#edeff2',
-    marginRight: 5,
-    marginBottom: 5,
-  },
-  facilityText: {
-    fontSize: 12,
-    padding: 4,
-    color: '#79818a',
-    backgroundColor: 'transparent',
-  },
   lessMoreButton: {
     color: Color.brand,
     fontWeight: '800',
+  },
+  adaptableBadge: {
+    backgroundColor: Color.blueGrey.$50,
+  },
+  adaptableBadgeText: {
+    color: '#79818a',
   },
 });
 
@@ -72,9 +67,12 @@ export class Facilities extends React.Component<Props, State> {
         {listToRender.map(facility => {
           return (
             facility && (
-              <View key={facility.id} style={styles.facilityView}>
-                <Text style={styles.facilityText}>{facility.name}</Text>
-              </View>
+              <AdaptableBadge
+                key={facility.id}
+                text={facility.name || ''}
+                style={styles.adaptableBadge}
+                textStyle={styles.adaptableBadgeText}
+              />
             )
           );
         })}

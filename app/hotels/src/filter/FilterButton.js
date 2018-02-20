@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { Button, Color } from '@kiwicom/react-native-app-shared';
+import { Button, Color, Icon } from '@kiwicom/react-native-app-shared';
 
 const styles = {
   default: {
@@ -15,15 +15,15 @@ type Props = {
   title: string,
   isActive: boolean,
   onPress: () => void,
-  icon?: {|
-    name: string,
-    color?: string,
-  |},
+  icon?: React.Element<typeof Icon>,
 };
 
 export default function FilterButton(props: Props) {
   const { title, isActive, icon, onPress } = props;
   const buttonStyles = {
+    buttonWrapper: {
+      backgroundColor: Color.brand,
+    },
     button: {
       backgroundColor: isActive ? Color.grey.$800 : Color.brand,
       paddingLeft: isActive || !icon ? 10 : 0,

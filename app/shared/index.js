@@ -31,6 +31,7 @@ export { default as StretchedImage } from './src/image/StretchedImage';
 
 export { default as FullPageLoading } from './src/loaders/FullPageLoading';
 export { default as IconLoading } from './src/loaders/IconLoading';
+export { default as ListFooterLoading } from './src/loaders/ListFooterLoading';
 
 export { default as DropMarker } from './src/map/DropMarker';
 
@@ -59,7 +60,9 @@ export { default as Color } from './src/Color';
 export { default as Device } from './src/Device';
 export { default as Icon } from './src/Icon';
 export { default as Modal } from './src/Modal';
+export { default as StyleSheet } from './src/PlatformStyleSheet';
 export { default as Price } from './src/Price';
+export { default as Text } from './src/Text';
 export { default as TouchableItem } from './src/TouchableItem';
 export { default as WebView } from './src/WebView';
 

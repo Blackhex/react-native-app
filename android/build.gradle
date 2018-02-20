@@ -4,6 +4,9 @@ buildscript {
     apply from: "dependencies.gradle"
 
     repositories {
+        // this line will fix Could not find com.android.tools.build:gradle:3.0.1
+        // https://stackoverflow.com/a/47456492/3135248
+        google()
         jcenter()
         google()
     }

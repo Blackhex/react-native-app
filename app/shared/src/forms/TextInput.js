@@ -2,36 +2,41 @@
 
 import * as React from 'react';
 import { Icon } from '@kiwicom/react-native-app-shared';
-import {
-  TextInput as OriginalTextInput,
-  View,
-  StyleSheet,
-  Platform,
-} from 'react-native';
+import { TextInput as OriginalTextInput, View } from 'react-native';
 
-export const styles = {
+import StyleSheet from '../PlatformStyleSheet';
+
+const styles = StyleSheet.create({
   input: {
-    color: 'black',
-    backgroundColor: 'transparent',
-    fontSize: 15,
-    padding: 10,
     flex: 1,
+    color: '#30363d',
+    backgroundColor: 'transparent',
+    padding: 10,
+    android: {
+      fontSize: 16,
+    },
+    ios: {
+      fontSize: 14,
+    },
   },
   wrapper: {
-    height: 40,
-    backgroundColor: '#fff',
-    marginBottom: 5,
     flexDirection: 'row',
-    borderRadius: Platform.select({
-      ios: 0,
-      android: 2,
-    }),
+    backgroundColor: '#fff',
+    elevation: 1, // Android only
+    android: {
+      borderRadius: 3,
+      height: 48,
+    },
+    ios: {
+      borderRadius: 0,
+      height: 47,
+    },
   },
   icon: {
     marginLeft: 10,
     alignSelf: 'center',
   },
-};
+});
 
 // not exact - additional properties allowed
 type Props = {
@@ -39,17 +44,16 @@ type Props = {
 };
 
 export default function TextInput(props: Props) {
-  const stylesheetStyles = StyleSheet.create(styles);
   return (
-    <View style={stylesheetStyles.wrapper}>
+    <View style={styles.wrapper}>
       {props.iconName && (
-        <Icon name={props.iconName} size={20} style={stylesheetStyles.icon} />
+        <Icon name={props.iconName} size={20} style={styles.icon} />
       )}
       <OriginalTextInput
         underlineColorAndroid="transparent"
         autoCorrect={false}
         {...props}
-        style={stylesheetStyles.input}
+        style={styles.input}
       />
     </View>
   );

@@ -1,9 +1,8 @@
 // @flow
 
 import * as React from 'react';
-import { Icon } from '@kiwicom/react-native-app-shared';
-import { View, Text, StyleSheet } from 'react-native';
-import defaultsDeep from 'lodash/defaultsDeep';
+import { Icon, StyleSheet } from '@kiwicom/react-native-app-shared';
+import { View, Text } from 'react-native';
 
 import Color from '../Color';
 import TouchableItem from '../TouchableItem';
@@ -11,14 +10,15 @@ import TouchableItem from '../TouchableItem';
 export type Props = {
   title: string,
   onPress?: Function,
-  // $FlowFixMeProps
   styles?: {|
     buttonWrapper?: Object,
     button?: Object,
     buttonText?: Object,
     icon?: Object,
   |},
-  icon?: Object,
+
+  // deprecated (will be replaced by ButtonGroup component, see IncrementDecrementButtons implementation)
+  icon?: React.Element<typeof Icon>,
 };
 
 export default function Button(props: Props) {
@@ -28,9 +28,7 @@ export default function Button(props: Props) {
   const buttonView = (
     <View style={[styles.buttonWrapper, additionalStyles.buttonWrapper]}>
       {props.icon && (
-        <View style={[styles.icon, additionalStyles.icon]}>
-          <Icon {...defaultsDeep(props.icon, defaultIconProps)} />
-        </View>
+        <View style={[styles.icon, additionalStyles.icon]}>{props.icon}</View>
       )}
       <View style={[styles.button, additionalStyles.button]}>
         <Text style={[styles.buttonText, additionalStyles.buttonText]}>
@@ -51,34 +49,39 @@ export default function Button(props: Props) {
   }
 }
 
-const defaultIconProps = {
-  size: 20,
-};
-
 function createStyles(iconAvailable) {
   const defaultStyles: Object = {
     buttonWrapper: {
       flexDirection: 'row',
+      borderRadius: 2,
+      android: {
+        height: 40,
+      },
+      ios: {
+        height: 36,
+      },
     },
     button: {
       flexGrow: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 10,
+      padding: 11,
+      paddingLeft: 0,
       borderRadius: 2,
       backgroundColor: Color.brand,
     },
     buttonText: {
-      fontWeight: 'bold',
+      fontWeight: '500',
       color: '#fff',
-      fontSize: 15,
+      fontSize: 14,
     },
     icon: {
-      backgroundColor: Color.brand,
       justifyContent: 'center',
       padding: 5,
+      paddingLeft: 7,
       borderTopLeftRadius: 2,
       borderBottomLeftRadius: 2,
+      backgroundColor: Color.brand,
     },
   };
   if (iconAvailable) {
